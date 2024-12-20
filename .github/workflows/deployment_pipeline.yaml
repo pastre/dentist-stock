@@ -8,18 +8,18 @@ jobs:
     test:
         runs-on: macos-latest 
         steps:
-	    - name: Checkout
+            - name: Checkout
               uses: actions/checkout@v4
-	    - name: Install Flutter
-	      uses: subosito/flutter-actions@v2
-	      with:
-		channel: stable
-		flutter-version: 3.27.1
+            - name: Install Flutter
+              uses: subosito/flutter-actions@v2
+              with:
+                channel: stable
+                flutter-version: 3.27.1
             - name: Lint
-	      run: flutter analyze
+              run: flutter analyze
             - name: Build iOS
-	      run: flutter build ipa 
+              run: flutter build ipa 
             # - Build Android
             - name: Run tests
-	      run: flutter test
+              run: flutter test
             # - Push build
