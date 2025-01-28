@@ -42,8 +42,8 @@ class StockListWidget extends StatelessWidget {
                     content: TextField(),
                     actions: [
                       TextButton(
-                        onPressed: () {},
-                        child: Text("salve"),
+                        onPressed: null,
+                        child: Text('Entrar'),
                       ),
                     ],
                   );

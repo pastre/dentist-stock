@@ -14,6 +14,11 @@ class DentistStockTester {
     return DentistStockTester._(tester);
   }
 
+  Finder get _joinTestButton => find.ancestor(
+        of: find.text('Entrar'),
+        matching: find.byType(TextButton),
+      );
+
   FutureOr<DentistStockTester> openApp() async {
     await _tester.pumpWidget(DentistStockApp());
     await _tester.pumpAndSettle();
@@ -30,6 +35,11 @@ class DentistStockTester {
     expect(find.text('Digite o nome do estoque'), findsOneWidget);
     return this;
   }
+
+  FutureOr<DentistStockTester> findsDisabledJoinButton() {
+    expect(_tester.widget<TextButton>(_joinTestButton).enabled, false);
+    return this;
+  }
 }
 
 void main() {
@@ -37,10 +47,12 @@ void main() {
   GIVEN app is open
   WHEN taps join button
   THEN join screen must appear
+  BUT join button is disabled
   ''', (WidgetTester t) async {
     DentistStockTester tester = DentistStockTester.from(t);
     await tester.openApp();
     await tester.tapJoin();
     await tester.findsAlert(title: 'Entrar em um estoque');
+    await tester.findsDisabledJoinButton();
   });
 }
