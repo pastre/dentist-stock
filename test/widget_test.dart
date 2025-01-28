@@ -15,7 +15,7 @@ class DentistStockTester {
   }
 
   FutureOr<DentistStockTester> openApp() async {
-    await _tester.pumpWidget(MyApp());
+    await _tester.pumpWidget(DentistStockApp());
     await _tester.pumpAndSettle();
     return this;
   }
