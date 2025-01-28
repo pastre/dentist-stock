@@ -1,30 +1,46 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:dentist_stock/main.dart';
 
+class DentistStockTester {
+  WidgetTester _tester;
+
+  DentistStockTester._(this._tester);
+
+  factory DentistStockTester.from(WidgetTester tester) {
+    return DentistStockTester._(tester);
+  }
+
+  FutureOr<DentistStockTester> openApp() async {
+    await _tester.pumpWidget(MyApp());
+    await _tester.pumpAndSettle();
+    return this;
+  }
+
+  FutureOr<DentistStockTester> tapJoin() async {
+    await _tester.tap(find.byIcon(Icons.add));
+    await _tester.pumpAndSettle();
+    return this;
+  }
+
+  FutureOr<DentistStockTester> findsAlert({required String title}) {
+    expect(find.text('Digite o nome do estoque'), findsOneWidget);
+    return this;
+  }
+}
+
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
-
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  testWidgets('''
+  GIVEN app is open
+  WHEN taps join button
+  THEN join screen must appear
+  ''', (WidgetTester t) async {
+    DentistStockTester tester = DentistStockTester.from(t);
+    await tester.openApp();
+    await tester.tapJoin();
+    await tester.findsAlert(title: 'Entrar em um estoque');
   });
 }
