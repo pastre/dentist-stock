@@ -1,7 +1,7 @@
+import 'package:dentist_stock/widget/dentist_inventory_app.dart';
+import 'package:dentist_stock/widget/inventory/inventory_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:dentist_stock/main.dart';
 
 class DentistInventoryTester {
   WidgetTester _tester;
