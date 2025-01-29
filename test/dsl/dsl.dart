@@ -46,10 +46,6 @@ class DentistInventoryTester {
 
   Future<void> verifyJoinedInventory({required String inventoryName}) async {
     await _tester.pumpAndSettle();
-    await _tester.pump();
-    await _tester.pump();
-    await _tester.pump();
-    await _tester.pumpAndSettle();
     expect(findInventory(name: inventoryName), findsOneWidget);
   }
 
