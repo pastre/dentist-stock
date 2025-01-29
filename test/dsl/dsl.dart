@@ -17,6 +17,11 @@ class DentistInventoryTester {
         matching: find.byType(TextButton),
       );
 
+  Finder findInventory({required String name}) => find.ancestor(
+        of: find.text(name),
+        matching: find.byType(InventoryRow),
+      );
+
   Future<void> openApp() async {
     await _tester.pumpWidget(DentistInventoryApp());
     await _tester.pumpAndSettle();
@@ -47,13 +52,6 @@ class DentistInventoryTester {
   Future<void> verifyJoinedInventory({required String inventoryName}) async {
     await _tester.pumpAndSettle();
     expect(findInventory(name: inventoryName), findsOneWidget);
-  }
-
-  Finder findInventory({required String name}) {
-    return find.ancestor(
-      of: find.text(name),
-      matching: find.byType(InventoryRow),
-    );
   }
 
   Future<void> verifyJoinInventoryClosed() async {
