@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const DentistStockApp());
+  runApp(const DentistInventoryApp());
 }
 
-class DentistStockApp extends StatelessWidget {
-  const DentistStockApp({super.key});
+class DentistInventoryApp extends StatelessWidget {
+  const DentistInventoryApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -15,13 +15,13 @@ class DentistStockApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: StockListWidget(),
+      home: JoinedInventoryListWidget(),
     );
   }
 }
 
-class StockListWidget extends StatelessWidget {
-  const StockListWidget({
+class JoinedInventoryListWidget extends StatelessWidget {
+  const JoinedInventoryListWidget({
     super.key,
   });
 

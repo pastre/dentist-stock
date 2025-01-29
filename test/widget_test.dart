@@ -5,39 +5,39 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:dentist_stock/main.dart';
 
-class DentistStockTester {
+class DentistInventoryTester {
   WidgetTester _tester;
 
-  DentistStockTester._(this._tester);
+  DentistInventoryTester._(this._tester);
 
-  factory DentistStockTester.from(WidgetTester tester) {
-    return DentistStockTester._(tester);
+  factory DentistInventoryTester.from(WidgetTester tester) {
+    return DentistInventoryTester._(tester);
   }
 
-  Finder get _joinTestButton => find.ancestor(
+  Finder get _joinInventoryButton => find.ancestor(
         of: find.text('Entrar'),
         matching: find.byType(TextButton),
       );
 
-  FutureOr<DentistStockTester> openApp() async {
-    await _tester.pumpWidget(DentistStockApp());
+  FutureOr<DentistInventoryTester> openApp() async {
+    await _tester.pumpWidget(DentistInventoryApp());
     await _tester.pumpAndSettle();
     return this;
   }
 
-  FutureOr<DentistStockTester> tapJoin() async {
+  FutureOr<DentistInventoryTester> tapJoin() async {
     await _tester.tap(find.byIcon(Icons.add));
     await _tester.pumpAndSettle();
     return this;
   }
 
-  FutureOr<DentistStockTester> findsAlert({required String title}) {
+  FutureOr<DentistInventoryTester> findsAlert({required String title}) {
     expect(find.text('Digite o nome do estoque'), findsOneWidget);
     return this;
   }
 
-  FutureOr<DentistStockTester> findsDisabledJoinButton() {
-    expect(_tester.widget<TextButton>(_joinTestButton).enabled, false);
+  FutureOr<DentistInventoryTester> findsDisabledJoinButton() {
+    expect(_tester.widget<TextButton>(_joinInventoryButton).enabled, false);
     return this;
   }
 }
@@ -49,7 +49,7 @@ void main() {
   THEN join screen must appear
   BUT join button is disabled
   ''', (WidgetTester t) async {
-    DentistStockTester tester = DentistStockTester.from(t);
+    DentistInventoryTester tester = DentistInventoryTester.from(t);
     await tester.openApp();
     await tester.tapJoin();
     await tester.findsAlert(title: 'Entrar em um estoque');
