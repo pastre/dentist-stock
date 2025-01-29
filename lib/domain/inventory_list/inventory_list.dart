@@ -28,6 +28,7 @@ class InventoryList {
       throw InventoryAlreadyJoined();
     }
     final inventory = Inventory(name: inventoryName);
+    _localStorage.addInventory(inventory);
     _controller.add(inventory);
   }
 }

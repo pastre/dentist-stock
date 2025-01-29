@@ -16,6 +16,13 @@ void main() {
     sut.join(inventoryName: 'expected_inventory_name');
   }, timeout: Timeout(Duration(seconds: 1)));
 
+  test('stores to disk when joins inventory', () {
+    final localStorage = InMemoryLocalStorage();
+    final sut = _makeSut(localStorage: localStorage);
+    sut.join(inventoryName: 'expected_inventory_name');
+    expect(localStorage.storedInventoryNames, isNotEmpty);
+  }, timeout: Timeout(Duration(seconds: 1)));
+
   test('loads from local storage when starts listening', () {
     final localStorage = StubLocalStorageProtocolDriver(
       inventoryNames: ['expected_inventory_name'],
@@ -50,9 +57,9 @@ class StubLocalStorageProtocolDriver implements LocalStorage {
   List<String> get storedInventoryNames => _inventoryNames;
 }
 
-InventoryList _makeSut({StubLocalStorageProtocolDriver? localStorage}) {
+InventoryList _makeSut({LocalStorage? localStorage}) {
   return InventoryList(
     StreamController(sync: true),
-    localStorage ?? EmptyLocalStorage(),
+    localStorage ?? InMemoryLocalStorage(),
   );
 }
