@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -19,26 +17,22 @@ class DentistInventoryTester {
         matching: find.byType(TextButton),
       );
 
-  FutureOr<DentistInventoryTester> openApp() async {
+  Future<void> openApp() async {
     await _tester.pumpWidget(DentistInventoryApp());
     await _tester.pumpAndSettle();
-    return this;
   }
 
-  FutureOr<DentistInventoryTester> tapJoin() async {
+  Future<void> tapJoin() async {
     await _tester.tap(find.byIcon(Icons.add));
     await _tester.pumpAndSettle();
-    return this;
   }
 
-  FutureOr<DentistInventoryTester> findsAlert({required String title}) {
+  Future<void> findsAlert({required String title}) async {
     expect(find.text('Digite o nome do estoque'), findsOneWidget);
-    return this;
   }
 
-  FutureOr<DentistInventoryTester> findsDisabledJoinButton() {
+  Future<void> findsDisabledJoinButton() async {
     expect(_tester.widget<TextButton>(_joinInventoryButton).enabled, false);
-    return this;
   }
 }
 
