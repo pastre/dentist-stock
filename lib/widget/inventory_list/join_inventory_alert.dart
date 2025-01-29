@@ -1,4 +1,5 @@
 import 'package:dentist_stock/domain/inventory_list/inventory_list.dart';
+import 'package:dentist_stock/widget/inventory/inventory_widget.dart';
 import 'package:flutter/material.dart';
 
 class JoinInventoryAlert extends StatefulWidget {
@@ -34,7 +35,14 @@ class _JoinInventoryAlertState extends State<JoinInventoryAlert> {
   }
 
   void _onPressed() {
-    widget.inventoryList.join(inventoryName: _currentInventoryName);
-    Navigator.of(context).pop();
+    try {
+      widget.inventoryList.join(inventoryName: _currentInventoryName);
+      Navigator.of(context).pop();
+    } on InventoryAlreadyJoined {
+      Navigator.of(context).pop();
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => InventoryWidget()),
+      );
+    }
   }
 }

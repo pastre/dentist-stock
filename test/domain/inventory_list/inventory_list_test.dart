@@ -26,6 +26,15 @@ void main() {
       emits('expected_inventory_name'),
     );
   }, timeout: Timeout(Duration(seconds: 1)));
+
+  test('throws when joining an already joined inventory', () {
+    final localStorage = StubLocalStorageProtocolDriver(
+      inventoryNames: ['existing_inventory'],
+    );
+    final sut = _makeSut(localStorage: localStorage);
+    expect(() => sut.join(inventoryName: 'existing_inventory'),
+        throwsA(isA<InventoryAlreadyJoined>()));
+  }, timeout: Timeout(Duration(seconds: 1)));
 }
 
 class StubLocalStorageProtocolDriver implements LocalStorage {

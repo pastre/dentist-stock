@@ -1,6 +1,7 @@
 import 'package:dentist_stock/domain/inventory_list/inventory.dart';
 import 'package:dentist_stock/data/local_storage.dart';
 import 'package:dentist_stock/widget/dentist_inventory_app.dart';
+import 'package:dentist_stock/widget/inventory/inventory_widget.dart';
 import 'package:dentist_stock/widget/inventory_list/inventory_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -66,5 +67,9 @@ class DentistInventoryTester {
 
   void addJoinedInventory(Inventory inventory) {
     _localStorageProtocolDriver.addInventory(inventory);
+  }
+
+  Future<void> verifyInventoryIsOpen(Inventory inventory) async {
+    expect(find.byType(InventoryWidget), findsOneWidget);
   }
 }

@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:dentist_stock/data/local_storage.dart';
 import 'package:dentist_stock/domain/inventory_list/inventory.dart';
 
+class InventoryAlreadyJoined {}
+
 class InventoryList {
   final StreamController<Inventory> _controller;
   final LocalStorage _localStorage;
@@ -22,6 +24,9 @@ class InventoryList {
   }
 
   void join({required String inventoryName}) {
+    if (_localStorage.storedInventoryNames.contains(inventoryName)) {
+      throw InventoryAlreadyJoined();
+    }
     final inventory = Inventory(name: inventoryName);
     _controller.add(inventory);
   }

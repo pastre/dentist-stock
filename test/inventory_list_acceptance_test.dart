@@ -44,4 +44,20 @@ void main() {
     await tester.openApp();
     await tester.verifyJoinedInventory(inventoryName: inventory.name);
   });
+
+  testWidgets('''
+  GIVEN inventory is joined
+  AND inventory name is 'Existing Inventory'
+  AND join inventory alert is open
+  AND alert text is 'Existing Inventory'
+  WHEN join inventory text is tapped
+  THEN it should route to 'Existing Inventory'
+  ''', (WidgetTester t) async {
+    DentistInventoryTester tester = DentistInventoryTester.from(t);
+    final inventory = Inventory(name: 'Existing Inventory');
+    tester.addJoinedInventory(inventory);
+    await tester.openApp();
+    await tester.joinInventory(inventoryName: inventory.name);
+    await tester.verifyInventoryIsOpen(inventory);
+  });
 }
