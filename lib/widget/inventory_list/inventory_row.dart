@@ -1,3 +1,4 @@
+import 'package:dentist_stock/widget/inventory/inventory_widget.dart';
 import 'package:flutter/material.dart';
 
 class InventoryRow extends StatelessWidget {
@@ -7,6 +8,14 @@ class InventoryRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(inventoryName);
+    return GestureDetector(
+      child: Text(inventoryName),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => InventoryWidget(),
+        ),
+      ),
+    );
   }
 }

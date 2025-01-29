@@ -72,4 +72,9 @@ class DentistInventoryTester {
   Future<void> verifyInventoryIsOpen(Inventory inventory) async {
     expect(find.byType(InventoryWidget), findsOneWidget);
   }
+
+  Future<void> tapInventory({required String inventoryName}) async {
+    await _tester.tap(findInventory(name: inventoryName));
+    await _tester.pumpAndSettle();
+  }
 }
