@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:dentist_stock/domain/inventory/inventory_list.dart';
-import 'package:dentist_stock/domain/inventory/inventory_repository.dart';
 import 'package:dentist_stock/data/local_storage.dart';
+import 'package:dentist_stock/domain/inventory/inventory.dart';
 import 'package:dentist_stock/widget/inventory/joined_inventory_list_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -14,9 +14,7 @@ class DentistInventoryApp extends StatelessWidget {
     required LocalStorage localStorage,
   }) {
     final controller = StreamController<Inventory>.broadcast(sync: true);
-    final inventoryRepository = InventoryRepository(controller, localStorage);
-    final inventoryList =
-        InventoryList(inventoryRepository: inventoryRepository);
+    final inventoryList = InventoryList(controller, localStorage);
     return DentistInventoryApp._(inventoryList: inventoryList);
   }
 

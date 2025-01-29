@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:dentist_stock/domain/inventory/inventory_list.dart';
-import 'package:dentist_stock/domain/inventory/inventory_repository.dart';
+import 'package:dentist_stock/domain/inventory/inventory.dart';
 import 'package:dentist_stock/main.dart';
 import 'package:dentist_stock/data/local_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -43,7 +43,7 @@ class StubLocalStorageProtocolDriver implements LocalStorage {
 
 InventoryList _makeSut({StubLocalStorageProtocolDriver? localStorage}) {
   return InventoryList(
-    inventoryRepository: InventoryRepository(
-        StreamController(sync: true), localStorage ?? EmptyLocalStorage()),
+    StreamController(sync: true),
+    localStorage ?? EmptyLocalStorage(),
   );
 }
