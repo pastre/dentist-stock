@@ -5,13 +5,15 @@ import 'package:dentist_stock/inventory_repository.dart';
 class InventoryList {
   final InventoryRepository _inventoryRepository;
 
-  InventoryList({
+  const InventoryList({
     required InventoryRepository inventoryRepository,
   }) : _inventoryRepository = inventoryRepository;
 
   Stream<List<Inventory>> get joinedInventories =>
       _inventoryRepository.joinedInventories();
-  void join(Inventory inventory) {
+
+  void join({required String inventoryName}) {
+    final inventory = Inventory(name: inventoryName);
     _inventoryRepository.join(inventory);
   }
 }

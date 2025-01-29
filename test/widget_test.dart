@@ -44,20 +44,25 @@ class DentistInventoryTester {
     await _tester.pumpAndSettle();
   }
 
+  Future<void> verifyJoinedInventory({required String inventoryName}) async {
+    await _tester.pumpAndSettle();
+    await _tester.pump();
+    await _tester.pump();
+    await _tester.pump();
+    await _tester.pumpAndSettle();
+    expect(findInventory(name: inventoryName), findsOneWidget);
+  }
+
+  Finder findInventory({required String name}) {
+    return find.ancestor(
+      of: find.text(name),
+      matching: find.byType(InventoryRow),
+    );
+  }
+
   Future<void> verifyJoinInventoryClosed() async {
     await _tester.pumpAndSettle();
     expect(find.byType(AlertDialog), findsNothing);
-  }
-}
-
-class InventoryRow extends StatelessWidget {
-  final String inventoryName;
-
-  const InventoryRow({super.key, required this.inventoryName});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(inventoryName);
   }
 }
 
@@ -81,10 +86,12 @@ void main() {
   AND the inventory exists
   WHEN taps join button
   THEN join inventory alert must disappear
+  AND the inventory should be displayed
   ''', (WidgetTester t) async {
     DentistInventoryTester tester = DentistInventoryTester.from(t);
     await tester.openApp();
     await tester.joinInventory(inventoryName: 'Stub inventory');
     await tester.verifyJoinInventoryClosed();
+    await tester.verifyJoinedInventory(inventoryName: 'Stub inventory');
   });
 }

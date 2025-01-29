@@ -29,4 +29,8 @@ class InventoryItem {
   });
 }
 
-class Inventory {}
+class Inventory {
+  final String name;
+
+  const Inventory({required this.name});
+}

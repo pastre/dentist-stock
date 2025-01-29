@@ -1,13 +1,22 @@
+import 'dart:async';
+
+import 'package:dentist_stock/inventory_list.dart';
+import 'package:dentist_stock/inventory_repository.dart';
 import 'package:flutter/material.dart';
 
+final controller = StreamController<Inventory>.broadcast(sync: true);
+final inventoryRepository = InventoryRepository(controller);
+final inventoryList = InventoryList(inventoryRepository: inventoryRepository);
+
 void main() {
-  runApp(const DentistInventoryApp());
+  runApp(
+    const DentistInventoryApp(),
+  );
 }
 
 class DentistInventoryApp extends StatelessWidget {
   const DentistInventoryApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,14 +24,18 @@ class DentistInventoryApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: JoinedInventoryListWidget(),
+      home: JoinedInventoryListWidget(
+        inventoryList: inventoryList,
+      ),
     );
   }
 }
 
 class JoinedInventoryListWidget extends StatelessWidget {
+  final InventoryList inventoryList;
   const JoinedInventoryListWidget({
     super.key,
+    required this.inventoryList,
   });
 
   @override
@@ -36,21 +49,45 @@ class JoinedInventoryListWidget extends StatelessWidget {
             onPressed: () {
               showDialog<void>(
                 context: context,
-                builder: (BuildContext context) {
-                  return JoinInventoryAlert();
-                },
+                builder: (BuildContext context) => JoinInventoryAlert(
+                  inventoryList: inventoryList,
+                ),
               );
             },
           )
         ],
       ),
+      body: StreamBuilder(
+          stream: inventoryList.joinedInventories,
+          builder: (context, snap) {
+            final inventoryList = snap.data ?? [];
+            return ListView.builder(
+              itemBuilder: (context, index) => InventoryRow(
+                inventoryName: inventoryList[index].name,
+              ),
+              itemCount: inventoryList.length,
+            );
+          }),
     );
   }
 }
 
+class InventoryRow extends StatelessWidget {
+  final String inventoryName;
+
+  const InventoryRow({super.key, required this.inventoryName});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(inventoryName);
+  }
+}
+
 class JoinInventoryAlert extends StatefulWidget {
+  final InventoryList inventoryList;
   const JoinInventoryAlert({
     super.key,
+    required this.inventoryList,
   });
 
   @override
@@ -79,7 +116,7 @@ class _JoinInventoryAlertState extends State<JoinInventoryAlert> {
   }
 
   void _onPressed() {
-    print('I was tapped!');
+    widget.inventoryList.join(inventoryName: _currentInventoryName);
     Navigator.of(context).pop();
   }
 }
