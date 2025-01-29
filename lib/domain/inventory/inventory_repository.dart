@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:dentist_stock/protocol_driver/local_storage_protocol_driver.dart';
+import 'package:dentist_stock/data/local_storage.dart';
 
 class InventoryRepository {
   final StreamController<Inventory> _controller;
-  final LocalStorageProtocolDriver _localStorage;
+  final LocalStorage _localStorage;
 
   const InventoryRepository(this._controller, this._localStorage);
 

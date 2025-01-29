@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:dentist_stock/domain/inventory/inventory_list.dart';
 import 'package:dentist_stock/domain/inventory/inventory_repository.dart';
 import 'package:dentist_stock/main.dart';
-import 'package:dentist_stock/protocol_driver/local_storage_protocol_driver.dart';
+import 'package:dentist_stock/data/local_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -28,7 +28,7 @@ void main() {
   }, timeout: Timeout(Duration(seconds: 1)));
 }
 
-class StubLocalStorageProtocolDriver implements LocalStorageProtocolDriver {
+class StubLocalStorageProtocolDriver implements LocalStorage {
   final List<String> _inventoryNames;
 
   StubLocalStorageProtocolDriver({
