@@ -1,3 +1,4 @@
+import 'package:dentist_stock/domain/inventory/inventory_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'dsl/dsl.dart';
@@ -29,5 +30,18 @@ void main() {
     await tester.joinInventory(inventoryName: 'Stub inventory');
     await tester.verifyJoinInventoryClosed();
     await tester.verifyJoinedInventory(inventoryName: 'Stub inventory');
+  });
+
+  testWidgets('''
+  GIVEN inventory is joined
+  AND app is closed
+  WHEN inventory list is opened
+  THEN it should display joined inventory
+  ''', (WidgetTester t) async {
+    DentistInventoryTester tester = DentistInventoryTester.from(t);
+    final inventory = Inventory(name: 'Stub inventory');
+    tester.addJoinedInventory(inventory);
+    await tester.openApp();
+    await tester.verifyJoinedInventory(inventoryName: inventory.name);
   });
 }

@@ -1,16 +1,20 @@
-import 'dart:async';
-
-import 'package:dentist_stock/domain/inventory/inventory_list.dart';
 import 'package:dentist_stock/domain/inventory/inventory_repository.dart';
+import 'package:dentist_stock/protocol_driver/local_storage_protocol_driver.dart';
 import 'package:dentist_stock/widget/dentist_inventory_app.dart';
 import 'package:flutter/material.dart';
 
-final controller = StreamController<Inventory>.broadcast(sync: true);
-final inventoryRepository = InventoryRepository(controller);
-final inventoryList = InventoryList(inventoryRepository: inventoryRepository);
-
 void main() {
+  final localStorage = EmptyLocalStorage();
   runApp(
-    const DentistInventoryApp(),
+    DentistInventoryApp.fromDependencies(localStorage: localStorage),
   );
+}
+
+class EmptyLocalStorage implements LocalStorageProtocolDriver {
+  @override
+  void addInventory(Inventory i) {}
+
+  @override
+  // TODO: implement storedInventoryNames
+  List<String> get storedInventoryNames => [];
 }

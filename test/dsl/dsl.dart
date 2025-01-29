@@ -1,10 +1,14 @@
+import 'package:dentist_stock/domain/inventory/inventory_repository.dart';
+import 'package:dentist_stock/protocol_driver/local_storage_protocol_driver.dart';
 import 'package:dentist_stock/widget/dentist_inventory_app.dart';
 import 'package:dentist_stock/widget/inventory/inventory_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class DentistInventoryTester {
-  WidgetTester _tester;
+  final WidgetTester _tester;
+  final LocalStorageProtocolDriver _localStorageProtocolDriver =
+      LocalStorageProtocolDriver();
 
   DentistInventoryTester._(this._tester);
 
@@ -23,7 +27,9 @@ class DentistInventoryTester {
       );
 
   Future<void> openApp() async {
-    await _tester.pumpWidget(DentistInventoryApp());
+    await _tester.pumpWidget(DentistInventoryApp.fromDependencies(
+      localStorage: _localStorageProtocolDriver,
+    ));
     await _tester.pumpAndSettle();
   }
 
@@ -57,5 +63,9 @@ class DentistInventoryTester {
   Future<void> verifyJoinInventoryClosed() async {
     await _tester.pumpAndSettle();
     expect(find.byType(AlertDialog), findsNothing);
+  }
+
+  void addJoinedInventory(Inventory inventory) {
+    _localStorageProtocolDriver.addInventory(inventory);
   }
 }

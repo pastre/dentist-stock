@@ -1,12 +1,18 @@
 import 'dart:async';
 
+import 'package:dentist_stock/protocol_driver/local_storage_protocol_driver.dart';
+
 class InventoryRepository {
   final StreamController<Inventory> _controller;
+  final LocalStorageProtocolDriver _localStorage;
 
-  const InventoryRepository(this._controller);
+  const InventoryRepository(this._controller, this._localStorage);
 
   Stream<List<Inventory>> joinedInventories() async* {
-    final List<Inventory> currentList = List.empty(growable: true);
+    final List<Inventory> currentList = _localStorage.storedInventoryNames
+        .map((name) => Inventory(name: name))
+        .toList();
+    yield currentList;
     await for (Inventory newInventory in _controller.stream) {
       currentList.add(newInventory);
       yield currentList;
