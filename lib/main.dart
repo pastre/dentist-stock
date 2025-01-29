@@ -37,16 +37,7 @@ class JoinedInventoryListWidget extends StatelessWidget {
               showDialog<void>(
                 context: context,
                 builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('Digite o nome do estoque'),
-                    content: TextField(),
-                    actions: [
-                      TextButton(
-                        onPressed: null,
-                        child: Text('Entrar'),
-                      ),
-                    ],
-                  );
+                  return JoinInventoryAlert();
                 },
               );
             },
@@ -54,5 +45,41 @@ class JoinedInventoryListWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class JoinInventoryAlert extends StatefulWidget {
+  const JoinInventoryAlert({
+    super.key,
+  });
+
+  @override
+  State<JoinInventoryAlert> createState() => _JoinInventoryAlertState();
+}
+
+class _JoinInventoryAlertState extends State<JoinInventoryAlert> {
+  String _currentInventoryName = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Digite o nome do estoque'),
+      content: TextField(
+        onChanged: (value) => setState(() {
+          _currentInventoryName = value;
+        }),
+      ),
+      actions: [
+        TextButton(
+          onPressed: _currentInventoryName.isEmpty ? null : () => _onPressed(),
+          child: Text('Entrar'),
+        ),
+      ],
+    );
+  }
+
+  void _onPressed() {
+    print('I was tapped!');
+    Navigator.of(context).pop();
   }
 }
