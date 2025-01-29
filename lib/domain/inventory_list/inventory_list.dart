@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:dentist_stock/data/local_storage.dart';
-import 'package:dentist_stock/domain/inventory/inventory.dart';
+import 'package:dentist_stock/domain/inventory_list/inventory.dart';
 
 class InventoryList {
   final StreamController<Inventory> _controller;

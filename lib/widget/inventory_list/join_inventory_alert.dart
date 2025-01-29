@@ -1,4 +1,4 @@
-import 'package:dentist_stock/domain/inventory/inventory_list.dart';
+import 'package:dentist_stock/domain/inventory_list/inventory_list.dart';
 import 'package:flutter/material.dart';
 
 class JoinInventoryAlert extends StatefulWidget {

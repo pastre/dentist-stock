@@ -1,4 +1,4 @@
-import 'package:dentist_stock/domain/inventory/inventory.dart';
+import 'package:dentist_stock/domain/inventory_list/inventory.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'dsl/dsl.dart';

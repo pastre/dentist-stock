@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:dentist_stock/domain/inventory/inventory_list.dart';
+import 'package:dentist_stock/domain/inventory_list/inventory_list.dart';
 import 'package:dentist_stock/data/local_storage.dart';
-import 'package:dentist_stock/domain/inventory/inventory.dart';
-import 'package:dentist_stock/widget/inventory/joined_inventory_list_widget.dart';
+import 'package:dentist_stock/domain/inventory_list/inventory.dart';
+import 'package:dentist_stock/widget/inventory_list/joined_inventory_list_widget.dart';
 import 'package:flutter/material.dart';
 
 class DentistInventoryApp extends StatelessWidget {
