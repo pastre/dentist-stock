@@ -64,6 +64,24 @@ final class RunnerTests: XCTestCase {
         XCTAssertFalse(messageLabel.isHidden)
         XCTAssertEqual("Dê acesso a camera para escanear códigos de barras", messageLabel.text)
     }
+    
+    func test_givenBarcodeScannerViewHasAppeared_whenStateChanges_itShouldDisplayUpdatedAccessInstruction() {
+        var currentState = CameraPermission.State.undetermined
+        let notificationCenter = NotificationCenter()
+        let sut = BarcodeScannerView(
+            permissions: .mock(currentState: currentState),
+            notificationCenter: notificationCenter
+        )
+        currentState = .allowed
+        notificationCenter.post(name: .cameraPermissionDidChange, object: nil)
+        guard let messageLabel = sut.subviews.compactMap { $0 as? UILabel }.first
+        else { return XCTFail("View has no label to display instructions") }
+        XCTAssertTrue(messageLabel.isHidden)
+    }
+}
+
+extension Notification.Name {
+    static let cameraPermissionDidChange = Notification.Name("cameraPermissionsDidChange")
 }
 
 struct CameraPermission {
@@ -92,6 +110,7 @@ extension CameraPermission {
 
 final class BarcodeScannerView: UIView {
     private let permissions: CameraPermission
+    private let notificationCenter: NotificationCenter
     
     private lazy var messageLabel: UILabel = {
         let label = UILabel()
@@ -100,8 +119,12 @@ final class BarcodeScannerView: UIView {
         return label
     }()
     
-    init(permissions: CameraPermission) {
+    init(
+        permissions: CameraPermission,
+        notificationCenter: NotificationCenter = .default
+    ) {
         self.permissions = permissions
+        self.notificationCenter = notificationCenter
         super.init(frame: .zero)
         self.configure()
     }
@@ -111,6 +134,7 @@ final class BarcodeScannerView: UIView {
     }
     
     private func configure() {
+        notificationCenter.addObserver(self, selector: #selector(cameraPermissionDidChange), name: .cameraPermissionDidChange, object: nil)
         addSubview(messageLabel)
         
         messageLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
@@ -124,6 +148,11 @@ final class BarcodeScannerView: UIView {
     private func renderPermissionInstruction() {
         let currentState = permissions.currentState()
         messageLabel.isHidden = currentState == .allowed
+    }
+    
+    @objc
+    private func cameraPermissionDidChange() {
+        renderPermissionInstruction()
     }
     
     @objc
