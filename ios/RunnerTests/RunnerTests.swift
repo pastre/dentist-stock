@@ -1,6 +1,7 @@
 import Flutter
 import UIKit
 import XCTest
+import AVFoundation
 
 final class RunnerTests: XCTestCase {
     func test_givenUndeterminedCameraPermission_whenTapped_itShouldRequestAccess() {
@@ -92,6 +93,40 @@ struct CameraPermission {
     let currentState: () -> State
     let request: () -> Void
     let openSettings: () -> Void
+}
+
+extension CameraPermission {
+    static let system: CameraPermission = .init(
+        currentState: { AVCaptureDevice.authorizationStatus(for: .video).permission },
+        request: {
+            AVCaptureDevice.requestAccess(
+                for: .video,
+                completionHandler: { _ in NotificationCenter.default.post(name: .cameraPermissionDidChange, object: nil) }
+            )
+        },
+        openSettings: {
+            guard let url = URL(string: UIApplication.openSettingsURLString)
+            else { fatalError("System provided the wrong settings URL! Got [\(UIApplication.openSettingsURLString)]") }
+            UIApplication.shared.open(url)
+        }
+    )
+}
+
+extension AVAuthorizationStatus {
+    var permission: CameraPermission.State {
+        switch self {
+        case .notDetermined:
+            .undetermined
+        case .restricted:
+            .denied
+        case .denied:
+            .denied
+        case .authorized:
+            .allowed
+        @unknown default:
+            .denied
+        }
+    }
 }
 
 extension CameraPermission {
