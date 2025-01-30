@@ -5,6 +5,15 @@ class InventoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Placeholder();
+    return Column(
+      children: [BarcodeScannerWidget()],
+    );
   }
+}
+
+class BarcodeScannerWidget extends StatelessWidget {
+  const BarcodeScannerWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {}
 }

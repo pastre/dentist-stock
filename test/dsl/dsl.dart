@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 class DentistInventoryTester {
   final WidgetTester _tester;
   final LocalStorage _localStorageProtocolDriver = LocalStorage();
+  final BarcodeReader _barcodeReaderProtocolDriver = BarcodeReader();
 
   DentistInventoryTester._(this._tester);
 
@@ -77,4 +78,34 @@ class DentistInventoryTester {
     await _tester.tap(findInventory(name: inventoryName));
     await _tester.pumpAndSettle();
   }
+
+  Future<void> didScanBarcode(String s) async {
+    _barcodeReaderProtocolDriver.didScanBarcode(s);
+  }
+
+  Future<void> enterItemName(String s) async {
+    await _tester.enterText(find.byType(TextField), s);
+  }
+
+  Future<void> tapCreate() async {
+    await _tester.tap(find.byIcon(Icons.add));
+  }
+
+  Future<void> verifyItemExists({
+    required String name,
+    required String barcode,
+  }) async {
+    expect(findInventoryRow(name: name), findsOneWidget);
+  }
+
+  Finder findInventoryRow({required String name}) => find.ancestor(
+        of: find.text(name),
+        matching: find.byType(InventoryItemRowWidget),
+      );
 }
+
+class BarcodeReader {
+  void didScanBarcode(String s) {}
+}
+
+class InventoryItemRowWidget {}
