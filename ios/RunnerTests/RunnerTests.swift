@@ -41,6 +41,29 @@ final class RunnerTests: XCTestCase {
         sut.perform(Selector("onTap"))
         XCTAssertEqual(1, openSettingsCallCount)
     }
+    
+    func test_givenAllowedCameraPermission_whenAppears_itShouldHideInstruction() {
+        let sut = BarcodeScannerView(permissions: .mock(currentState: .allowed))
+        guard let messageLabel = sut.subviews.compactMap { $0 as? UILabel }.first
+        else { return XCTFail("View has no label to display instructions") }
+        XCTAssertTrue(messageLabel.isHidden)
+    }
+
+    func test_givenDeniedCameraPermission_whenAppears_itShouldDisplayRouteToSettingsInstruction() {
+        let sut = BarcodeScannerView(permissions: .mock(currentState: .denied))
+        guard let messageLabel = sut.subviews.compactMap { $0 as? UILabel }.first
+        else { return XCTFail("View has no label to display instructions") }
+        XCTAssertFalse(messageLabel.isHidden)
+        XCTAssertEqual("Dê acesso a camera para escanear códigos de barras", messageLabel.text)
+    }
+    
+    func test_givenUndeterminedCameraPermission_whenAppears_itShouldDisplayTapToGiveAccessInstruction() {
+        let sut = BarcodeScannerView(permissions: .mock(currentState: .undetermined))
+        guard let messageLabel = sut.subviews.compactMap { $0 as? UILabel }.first
+        else { return XCTFail("View has no label to display instructions") }
+        XCTAssertFalse(messageLabel.isHidden)
+        XCTAssertEqual("Dê acesso a camera para escanear códigos de barras", messageLabel.text)
+    }
 }
 
 struct CameraPermission {
@@ -70,13 +93,37 @@ extension CameraPermission {
 final class BarcodeScannerView: UIView {
     private let permissions: CameraPermission
     
+    private lazy var messageLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Dê acesso a camera para escanear códigos de barras"
+        return label
+    }()
+    
     init(permissions: CameraPermission) {
         self.permissions = permissions
         super.init(frame: .zero)
+        self.configure()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func configure() {
+        addSubview(messageLabel)
+        
+        messageLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        messageLabel.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        messageLabel.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        messageLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        
+        renderPermissionInstruction()
+    }
+    
+    private func renderPermissionInstruction() {
+        let currentState = permissions.currentState()
+        messageLabel.isHidden = currentState == .allowed
     }
     
     @objc
